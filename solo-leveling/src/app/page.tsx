@@ -1,103 +1,203 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import {useSession, signIn} from "next-auth/react";
+import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
+import AuthButton from "@/components/AuthButton";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function HomePage(){
+    const {data:session, status} = useSession();
+    const router = useRouter();
+    const [isRegister, setIsRegister] = useState(false); //false = login | true = register
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    
+    //redirect to main page if user is already logged in
+    useEffect(() => {
+        if (session){
+            router.push("/dashboard")
+        }
+    }, [session, router]);
+
+    //loading screen
+    if (status === "loading"){
+        return(
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
+                <div className="text-white text-xl">Loading...</div>
+            </div>
+        );
+    }
+
+    //if user is logged in, show nothing
+    if (session){
+        return null;
+    }
+
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        if (isRegister){
+            if (password !== confirmPassword){
+                setError('Passwords do not match');
+                setLoading(false);
+                return;
+            }
+            try{
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}, //Tell server everything is JSON
+                    body: JSON.stringify({email, password})
+                });
+                const data = await response.json();
+
+                if (response.ok){
+                    //Registration successful
+                    setIsRegister(false); //login mode
+                    setEmail('');
+                    setPassword('');
+                    setConfirmPassword('');
+                } else{
+                    setError(data.error || 'Registration failed')
+                }
+            } catch (error) {
+                setError('Something went wrong')
+            }
+        } else{
+            try{
+                const result = await signIn('credentials', {
+                    email,
+                    password,
+                    redirect: false
+                });
+
+                if (result?.error){
+                    setError('Invalid email or password');
+                }
+            } catch (error) {
+                setError('Something went wrong')
+            }
+        }
+        setLoading(false);
+    }
+    
+    const toggleMode = () =>{
+        setIsRegister(!isRegister);
+        setError('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+    }
+    //Login Page
+    return(
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
+            <div className="max-w-md w-full space-y-8 p-8">
+                <div className="text-center">
+                    <h1 className="text-center">
+                        Health Leveling
+                    </h1>
+                    <p className="text-gray-400 text-lg">
+                        Level up your health journey
+                    </p>
+                    <p className="text-gray-500 text-sm mt-2">
+                        Track your Fitness, Mental Health, and many more to gain stats!
+                    </p>
+                </div>
+
+                <div className="mt-8 space-y-6">
+                    {/*Email Auth Form*/}
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
+                        <form onSubmit={onSubmit} className="space-y-4">
+                            <div>
+                                <input
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                                required
+                                />
+                            </div>
+                            <div>
+                                <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                                required
+                                />
+                            </div>
+
+                            {isRegister && (
+                                <div>
+                                    <input
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                                    required
+                                    />
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="text-red-400 text-sm text-center">
+                                    {error}
+                                </div>
+                            )}
+
+                            <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded-lg font-semibold transition-colors"
+                            >
+                                {loading ? 'Please wait...': (isRegister ? 'Create Account' : 'Sign In')}
+                            </button>
+                        </form>
+
+                        <div className="mt-4 text-center">
+                            <button
+                                onClick={toggleMode}
+                                className="text-blue-400  hover:text-blue-300 underline text-sm "
+                            >
+                                {isRegister
+                                    ?"Already have an account? Sign in here"
+                                    :"Don't have an account? Sign up here"
+                                    }
+                            </button>
+                        </div>
+                    </div>
+
+                    {/*Divider */}
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-600"></div>
+                        </div> 
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-1 bg-gradient-to-br from-gray-900 to-black text-gray-400"> //comes on top of the line
+                                or
+                            </span>
+                        </div>
+                    </div>
+
+                    {/*Google Auth Button*/}
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
+                        <AuthButton variant="google">
+                            Continue with Google
+                        </AuthButton>
+                    </div>
+                    
+                    <p className="text-center text-gray-500 text-sm">
+                        Join along with other hunters gathering their health
+                    </p>
+                </div>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    )
 }
