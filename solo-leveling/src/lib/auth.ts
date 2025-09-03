@@ -50,20 +50,25 @@ export const authOptions: NextAuthOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET, //encrypting session data
     session: {
-        strategy: "database",
+        strategy: "jwt",
     },
     pages:{
         signIn: '/'
     },
     callbacks: {
-        async redirect({url, baseUrl}){ //Runs after successful login
+        async redirect({ url, baseUrl }) {
             if (url.startsWith(baseUrl)) return url;
-            return `${baseUrl}/dashboard`
+            return `${baseUrl}/dashboard`;
         },
-        //custom session object sent to the client
-        async session ({session, user}) {
-            if (session.user){
-                (session.user as any).id = user.id; 
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id || (user as any)._id?.toString();
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                (session.user as any).id = token.id;
             }
             return session;
         },

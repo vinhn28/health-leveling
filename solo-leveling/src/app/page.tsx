@@ -180,7 +180,7 @@ export default function HomePage(){
                             <div className="w-full border-t border-gray-600"></div>
                         </div> 
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-1 bg-gradient-to-br from-gray-900 to-black text-gray-400"> //comes on top of the line
+                            <span className="px-1 bg-gradient-to-br from-gray-900 to-black text-gray-400"> 
                                 or
                             </span>
                         </div>

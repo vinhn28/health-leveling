@@ -1,4 +1,136 @@
 @import "tailwindcss";
+@tailwind utilities;
+
+@layer utilities{
+  .text-glow-blue {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8),
+                0 0 20px rgba(59, 130, 246, 0.4);
+  }
+  .text-glow-white {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+                 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.8),
+                 0 0 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .text-glow-red {
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8),
+                 0 0 20px rgba(239, 68, 68, 0.4);
+  }
+
+  .holographic-spiral{
+    position:absolute;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%,
+      rgba(59, 130, 246, 0.6) 20%,
+      rgba(96, 165, 250, 0.8) 50%,
+      rgba(59, 130, 246, 0.6) 80%,
+      transparent 100%);
+      border-radius: 1px;
+      filter: blur(1px);
+      animation: spiral 20s linear infinite;
+      transform-origin: center;
+  }
+  .holographic-spiral-1{
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 25s;
+  }
+
+  .holographic-spiral-2 {
+    top: 60%;
+    right: 15%;
+    animation-delay: 5s;
+    animation-duration: 30s;
+    transform: rotate(120deg);
+  }
+
+  .holographic-spiral-3 {
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 10s;
+  animation-duration: 22s;
+  transform: rotate(240deg);
+  }
+
+  .holographic-spiral-4 {
+    top: 40%;
+    right: 30%;
+    animation-delay: 15s;
+    animation-duration: 28s;
+    transform: rotate(60deg);
+  }
+
+  @keyframes spiral{
+    0%{
+      transform: rotate(0deg) scale(0.8);
+      opacity: 0.3;
+    }
+    25%{
+      transform: rotate(90deg) scale(1.2);
+      opacity: 0.8;
+    }
+    50%{
+      transform: rotate(180deg) scale(1);
+      opacity: 0.6;
+    }
+    75%{
+      transform: rotate(270deg) scale(1.3);
+      opacity: 0.9;
+    }
+    100%{
+      transform: rotate(360deg) scale(0.8);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes slideUp{
+    from{
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-fadeIn{
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slideUp{
+    animation: slideUp 0.4s ease-out;
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100%{
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-out{
+    animation: slide-out 300ms ease-in-out forwards;
+}
+
+
+
 
 :root {
   --background: #ffffff;
@@ -23,4 +155,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+#__next {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #000000);
+}
+
+
