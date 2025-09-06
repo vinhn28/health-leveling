@@ -1,4 +1,4 @@
-
+//interface and necessary fields for a quest template
 export interface QuestTemplate {
     _id?: string;
     name: string;

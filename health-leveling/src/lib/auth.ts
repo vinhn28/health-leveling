@@ -6,8 +6,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
 //Main config object for NextAuth
-export const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
+export const authOptions: NextAuthOptions = { //Const must have all NextAuthOptions properties
+    adapter: MongoDBAdapter(clientPromise), 
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!, //Google Oauth Client ID
@@ -56,17 +56,17 @@ export const authOptions: NextAuthOptions = {
         signIn: '/'
     },
     callbacks: {
-        async redirect({ url, baseUrl }) {
+        async redirect({ url, baseUrl }) { //Controls where users go after signing in/out
             if (url.startsWith(baseUrl)) return url;
             return `${baseUrl}/dashboard`;
         },
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id || (user as any)._id?.toString();
+        async jwt({ token, user }) { //Runs whenever JWT is created/accessed
+            if (user) { 
+                token.id = user.id || (user as any)._id?.toString(); //Adds user ID to jwt token
             }
-            return token;
+            return token; //return token object that includes basic info about user + id
         },
-        async session({ session, token }) {
+        async session({ session, token }) { //useSession() being used
             if (session.user) {
                 (session.user as any).id = token.id;
             }

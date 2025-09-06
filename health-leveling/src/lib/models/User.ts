@@ -1,5 +1,6 @@
 import { QuestTemplate } from "./QuestTemplate";
 
+//default stats interface 
 export interface UserGamingStats {
     level: number;
     totalXP: number;

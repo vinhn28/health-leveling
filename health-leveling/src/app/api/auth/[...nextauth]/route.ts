@@ -4,5 +4,5 @@ import { authOptions } from "@/lib/auth";
 const handler = NextAuth(authOptions);
 
 
-//Export GET and POST handlers for the route (required by Next.js App router)
+//Export GET and POST handlers for the route to be used in app router
 export {handler as GET, handler as POST};

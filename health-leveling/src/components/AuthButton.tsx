@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 type AuthButtonProps = {
     variant?: 'google'| 'header'; //Two UI styles for buttons
-    children?: React.ReactNode
+    children?: React.ReactNode //Anything react can render 
     className?: string
 }
 
@@ -43,7 +43,7 @@ export default function AuthButton({
 
     //Google oauth
     const handleGoogleSignIn = async() => {
-        await signIn('google', {callbackUrl: '/dashboard'})
+        await signIn('google', {callbackUrl: '/dashboard'}) //after signing in go to dashboard
     }
     return(
         <button onClick={handleGoogleSignIn}

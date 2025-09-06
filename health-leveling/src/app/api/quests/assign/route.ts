@@ -65,9 +65,7 @@ export async function POST(request: NextRequest){
                         assignedQuests: mergedQuests
                     });
                 } else {
-                    // Old format - full objects stored, clear and create new ones
                     console.log('Found old format quest objects, clearing and creating new quests');
-                    // Fall through to create new quests
                 }
             } catch (err) {
                 console.error('Error processing existing quests:', err);

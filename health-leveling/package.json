@@ -1,5 +1,6 @@
 {
   "name": "solo-leveling",
+  "description": "Full-stack authentication app with NextAuth.js and MongoDB",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -71,8 +71,6 @@ export default function QuestPanel(){
                     console.log('Setting assigned quests:', data.assignedQuests);
                     setAsssignedQuests(data.assignedQuests);
                 } else {
-                    console.log('User assigned quests data:', JSON.stringify(currentUser.assignedQuests, null, 2));
-
                     console.error('Failed to fetch assigned quests:', data.error)
                 }
             } catch (error){
