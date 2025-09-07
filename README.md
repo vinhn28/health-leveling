@@ -18,50 +18,73 @@ Responsive Design: Modern UI with holographic visual effects
 
 # Tech Stack
 
-Frontend: Next.js 14, TypeScript, Tailwind CSS
+Frontend: Next.js, TypeScript, Tailwind CSS
 Authentication: NextAuth.js with Google OAuth and credentials
 Database: MongoDB with MongoDB Adapter
 Styling: Custom CSS animations and Tailwind utilities
 Icons: Lucide React
 
-# Getting Started
-Prerequisites
+# 🚀 Getting Started
 
-Node.js 18+
-MongoDB database
-Google OAuth credentials (optional)
+This is a full-stack Next.js application — the **frontend** and **backend** (API routes, authentication, and database integration) run together.
+
+## Prerequisites
+- [Node.js](https://nodejs.org/) v18 or later
+- A [MongoDB](https://www.mongodb.com/) database (local or MongoDB Atlas)
+- Google OAuth credentials (optional, only if you want Google login enabled)
+
+---
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/vinhn28/health-leveling.git
+   cd health-leveling
+
+2. **Install dependencies**
+
+npm install
 
 
-Installation
+3. **Set up environment variables**
 
-Clone the repository
-bashgit clone https://github.com/vinhn28/health-leveling.git
-cd health-leveling 
+Create a .env.local file in the project root:
 
-Install dependencies
-bashnpm install
-
-Environment Setup
-Create a .env.local file in the root directory:
-env# NextAuth Configuration
+```bash
+# NextAuth Configuration
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-nextauth-secret-here
 
 # MongoDB Connection
 MONGODB_URI=your-mongodb-connection-string
 
-# Google OAuth Credentials (optional)
+# Google OAuth (optional)
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-⚠️ Important: Never commit your .env.local file or share real credentials publicly.
-Run the development server
-bashnpm run dev
+```
 
-Open your browser
-Navigate to http://localhost:3000
-```md
+⚠️ Important: Never commit your .env.local file or share real credentials publicly.
+
+# Running the App
+
+Development server
+```bash
+npm run dev
+```
+
+Then open http://localhost:3000
+.
+
+Production build
+
+```bash
+npm run build
+npm run start
+```
 
 ## Project Structure:
+```md
 health-leveling/
 ├── src/
 │   ├── app/                    # Next.js app directory
@@ -70,10 +93,45 @@ health-leveling/
 │   │   ├── profile/            # User profile page
 │   │   ├── username-setup/     # Initial setup
 │   │   └── api/                # API routes
+│   │       ├── auth/           # Authentication endpoints
+│   │       │   ├── [...nextauth]/
+│   │       │   │   └── routes.ts 
+│   │       │   ├── register/
+│   │       │   │   └── routes.ts #Register route
+│   │       │   └── quests/
+│   │       │       ├── assign/
+│   │       │       │   └── routes.ts #assign routes
+│   │       │       ├── complete/
+│   │       │       │   └── routes.ts #Quest Completion route
+│   │       │       └── user/
+│   │       │           ├── initialize/
+│   │       │           │   └── routes.ts #Initialize user stats route
+│   │       │           └── username/
+│   │       │               └── routes.ts #Setting up username route
+│   │       ├── stats/          # User statistics and progress
+│   │       │   └── route.ts
+│   │       ├── quests/         # Quest management
+│   │       │   ├── daily/      # Daily quest operations
+│   │       │   │   └── route.ts
+│   │       │   ├── complete/   # Quest completion handling
+│   │       │   │   └── route.ts
+│   │       │   └── assign/     # Quest assignment logic
+│   │       │       └── route.ts
+│   │       ├── user/           # User profile and data
+│   │       │   ├── profile/    # Profile management
+│   │       │   │   └── route.ts
+│   │       │   ├── stats/      # Individual user statistics
+│   │       │   │   └── route.ts
+│   │       │   └── level/      # Level progression tracking
+│   │       │       └── route.ts
+│   │       └── dashboard/      # Dashboard data aggregation
+│   │           └── route.ts
 │   ├── components/             # Reusable components
 │   │   ├── Navigation.tsx
 │   │   ├── AuthButton.tsx
+│   │   ├── Providers.tsx
 │   │   └── QuestCard.tsx
+│   │   └── QuestStatContainerProps.tsx 
 │   └── lib/                    # Utilities and models
 │       ├── models/             # Data models
 │       ├── database.ts         # MongoDB connection
