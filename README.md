@@ -1,7 +1,7 @@
 # Health Leveling
 Health Leveling turns your daily workouts into an RPG adventure ⚔️. Complete fitness quests, earn XP, build streaks, and watch your character grow stronger — just like in a game.
 
-# ![App Screenshot](https://cdn.discordapp.com/attachments/813517489313022003/1414024792977313792/image.png?ex=68be10b5&is=68bcbf35&hm=0cc60254092523e7cdb03a0f3fd1ce5cf283c52fa93b45a4679cda677017f193&)
+# ![App Screenshot](https://i.imgur.com/655Vn37.png)
 
 **[View Live App](https://health-leveling.vercel.app)**
 
@@ -14,7 +14,7 @@ Streak Tracking: Maintain daily completion streaks with visual feedback
 Profile Dashboard: View character stats, level, XP, and progress
 Responsive Design: Modern UI with holographic visual effects
 
-# ![App Screenshot](https://cdn.discordapp.com/attachments/813517489313022003/1414110836208697405/image.png?ex=68be60d8&is=68bd0f58&hm=ba26dfbcf7a1947ed3431ce7b3b03d39caeae12dd21bd27b8b9cf5c017961c15&)
+# ![App Screenshot](https://i.imgur.com/c1ReUl6.png)
 
 # Tech Stack
 
@@ -164,7 +164,7 @@ Progress Tracking: Monitor advancement through profile dashboard
   Intelligence: Reading, learning tasks
   Sense: Meditation, mindfulness practices
 
-# ![App Screenshot](https://cdn.discordapp.com/attachments/813517489313022003/1414110782035202068/image.png?ex=68be60cb&is=68bd0f4b&hm=66ce65ed343dd64219073ab3192a47182d28cd58260eafd7a38f78825f766c0a&)
+# ![App Screenshot](https://i.imgur.com/oMiCC3c.png)
 
 # API Endpoints
 
